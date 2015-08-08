@@ -375,6 +375,7 @@ class fstream {};
 %ignore ofDirectory::canRead() const;
 %ignore ofDirectory::canWrite() const;
 %ignore ofDirectory::canExecute() const;
+%ignore ofBuffer::getLines();
 
 // TODO: SWIG Warning 503: due to operator ofBuffer::operator string
 %include "utils/ofFileUtils.h"
@@ -522,20 +523,6 @@ class fstream {};
 
 %include "app/ofAppRunner.h"
 
-// ----- COMMUNICATION ---------------------------------------------------------
-
-// conditional compilation for iOS and Android
-#if !defined(TARGET_IOS) && !defined(TARGET_ANDROID)
-
-	// ----- ofArduino.h -----
-
-	%include "communication/ofArduino.h"
-
-	// ----- ofSerial.h -----
-
-	%include "communication/ofSerial.h"
-
-#endif
 
 // ----- GL --------------------------------------------------------------------
 
@@ -589,7 +576,30 @@ class fstream {};
 %rename(allocateImageType) ofPixels_<unsigned short>::allocate(int,int,ofImageType);
 %rename(setFromPixelsImageType) ofPixels_<unsigned short>::setFromPixels(unsigned short const *,int,int,ofImageType);
 
+
 %include "graphics/ofPixels.h"
+
+//ignore these functions for now since swig doesn't wrap them correctly
+%ignore ofPixels_<float>::getLine(int);
+%ignore ofPixels_<float>::getLines();
+%ignore ofPixels_<float>::getPixelsIter();
+%ignore ofPixels_<float>::getConstLine(int) const;
+%ignore ofPixels_<float>::getConstLines() const;
+%ignore ofPixels_<float>::getConstPixelsIter() const;
+
+%ignore ofPixels_<unsigned char>::getLine(int);
+%ignore ofPixels_<unsigned char>::getLines();
+%ignore ofPixels_<unsigned char>::getPixelsIter();
+%ignore ofPixels_<unsigned char>::getConstLine(int) const;
+%ignore ofPixels_<unsigned char>::getConstLines() const;
+%ignore ofPixels_<unsigned char>::getConstPixelsIter() const;
+
+%ignore ofPixels_<unsigned short>::getLine(int);
+%ignore ofPixels_<unsigned short>::getLines();
+%ignore ofPixels_<unsigned short>::getPixelsIter();
+%ignore ofPixels_<unsigned short>::getConstLine(int) const;
+%ignore ofPixels_<unsigned short>::getConstLines() const;
+%ignore ofPixels_<unsigned short>::getConstPixelsIter() const;
 
 // tell SWIG about template classes
 #ifdef OF_SWIG_RENAME
@@ -676,41 +686,40 @@ public:
 
 	static void setGlobalDpi(int newDpi);
 
-	bool loadFont(string filename, int fontsize, bool _bAntiAliased=true,
+	bool load(string filename, int fontsize, bool _bAntiAliased=true,
 		bool _bFullCharacterSet=false, bool makeContours=false,
 		float simplifyAmt=0.3, int dpi=0);
 
 	bool isLoaded();
 	bool isAntiAliased();
 	bool hasFullCharacterSet();
+	
+	int getNumCharacters();
 
 	int getSize();
 	float getLineHeight();
 	void setLineHeight(float height);
-	float getLetterSpacing();
+	float getAscenderHeight() const;
+	float getDescenderHeight() const;
+	const ofRectangle & getGlyphBBox() const;
+	float getLetterSpacing() const;
 	void setLetterSpacing(float spacing);
-	float getSpaceSize();
+	float getSpaceSize() const;
 	void setSpaceSize(float size);
-	float stringWidth(string s);
-	float stringHeight(string s);
+	float stringWidth(string s) const;
+	float stringHeight(string s) const;
 
-	ofRectangle getStringBoundingBox(string s, float x, float y);
+	ofRectangle getStringBoundingBox(string s, float x, float y,bool vflip=true) const;
 
-	void drawString(string s, float x, float y);
-	void drawStringAsShapes(string s, float x, float y);
+	void drawString(string s, float x, float y) const;
+	void drawStringAsShapes(string s, float x, float y) const;
 
-	int getNumCharacters();
+	int getNumCharacters() const;
 
-	ofTTFCharacter getCharacterAsPoints(int character, bool vflip=ofIsVFlipped());
-	vector<ofTTFCharacter> getStringAsPoints(string str, bool vflip=ofIsVFlipped());
-	ofMesh & getStringMesh(string s, float x, float y);
-	ofTexture & getFontTexture();
-
-	void bind();
-	void unbind();
-
-	ofTextEncoding getEncoding() const;
-	void setEncoding(ofTextEncoding encoding);
+	ofTTFCharacter getCharacterAsPoints(int character, bool vflip=true,bool filled=true) const;
+	vector<ofTTFCharacter> getStringAsPoints(string str, bool vflip=true,bool filled=true) const;
+	const ofMesh & getStringMesh(string s, float x, float y,bool vflip=true) const;
+	const ofTexture & getFontTexture() const;
 };
 
 // DIFF: ofTrueTypeFont.h: added attributes: lineHeight, letterSpacing, & spaceSize
@@ -837,7 +846,8 @@ ofInterpolateHermite(float y1, float y2, float pct);
 
 // ----- ofXml.h -----
 
-%include "utils/ofXml.h"
+//disable ofXML for now, unresolved name on compilation
+//%include "utils/ofXml.h"
 
 // ----- ofMatrixStack.h -----
 
