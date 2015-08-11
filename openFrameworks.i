@@ -132,11 +132,7 @@ typedef float GLfloat;
 
 // ofIndexType only defined in ofConstants.h as a TESSIndex,
 // so we do it unambiguously here
-#if TARGET_OS_IPHONE || ANDROID || __ARMEL__
-	typedef unsigned short ofIndexType;
-#else
-	typedef unsigned int ofIndexType;
-#endif
+typedef unsigned short ofIndexType;
 
 %include "utils/ofConstants.h"
 
@@ -155,6 +151,13 @@ class ofBaseHasPixels {};
 // TODO: ofFbo.h: SWIG Warning 325 due to Settings nested struct
 %ignore ofFbo::Settings; // doesn't seem to silence warning
 
+//deprecated
+%ignore ofFbo::destroy();
+%ignore ofFbo::getTextureReference();
+%ignore ofFbo::getTextureReference(int);
+%ignore ofFbo::getTextureReference() const;
+%ignore ofFbo::getTextureReference(int) const;
+
 // DIFF: (Lua) ofFbo.h: beginFbo() & endFbo() since "end" is a Lua keyword
 #ifdef SWIGLUA
 	%rename(beginFbo) ofFbo::begin;
@@ -172,6 +175,9 @@ class ofBaseHasPixels {};
 %ignore ofSetMinMagFilters;
 %ignore ofGetUsingCustomMinMagFilters;
 %ignore ofRestoreMinMagFilters;
+
+//deprecated functions
+%ignore ofTexture::bAllocated() const;
 
 %include "gl/ofTexture.h"
 
@@ -198,6 +204,14 @@ template<typename T> class ofBaseImage_ {};
 %ignore ofLoadImage;
 %ignore ofSaveImage;
 %ignore ofCloseFreeImage;
+
+//deprecated
+%ignore ofImage_<unsigned char>::getTextureReference();
+%ignore ofImage_<unsigned char>::getTextureReference() const;
+%ignore ofImage_<float>::getTextureReference();
+%ignore ofImage_<unsigned short>::getTextureReference();
+%ignore ofImage_<float>::getTextureReference() const;
+%ignore ofImage_<unsigned short>::getTextureReference() const;
 
 // TODO: ofImage.h: SWIG Warning 503: due to operator ofImage_::operator pixels
 %include "graphics/ofImage.h"
@@ -243,6 +257,9 @@ class ofBaseSoundPlayer {};
 %ignore ofSoundUpdate;
 %ignore ofSoundGetSpectrum;
 %ignore ofSoundShutdown;
+
+//deprecated
+%ignore ofSoundPlayer::getIsPlaying() const;
 
 %include "sound/ofSoundPlayer.h"
 
@@ -376,6 +393,12 @@ class fstream {};
 %ignore ofDirectory::canWrite() const;
 %ignore ofDirectory::canExecute() const;
 %ignore ofBuffer::getLines();
+
+//deprecated
+%ignore ofBuffer::getBinaryBuffer();
+%ignore ofBuffer::getBinaryBuffer() const;
+%ignore ofBuffer::getFirstLine();
+%ignore ofBuffer::getNextLine();
 
 // TODO: SWIG Warning 503: due to operator ofBuffer::operator string
 %include "utils/ofFileUtils.h"
@@ -576,6 +599,15 @@ class fstream {};
 %rename(allocateImageType) ofPixels_<unsigned short>::allocate(int,int,ofImageType);
 %rename(setFromPixelsImageType) ofPixels_<unsigned short>::setFromPixels(unsigned short const *,int,int,ofImageType);
 
+//deprecated
+%ignore ofPixels_<float>::getPixels();
+%ignore ofPixels_<unsigned char>::getPixels();
+%ignore ofPixels_<unsigned short>::getPixels();
+
+%ignore ofPixels_<float>::getPixelsRef();
+%ignore ofPixels_<unsigned char>::getPixelsRef();
+%ignore ofPixels_<unsigned short>::getPixelsRef();
+
 
 %include "graphics/ofPixels.h"
 
@@ -663,6 +695,27 @@ class fstream {};
 %ignore ofRectRounded(float, float, float, float, float, float);
 
 %include "graphics/ofGraphics.h"
+
+//custom draw bitmap string code since SWIG can't wrap properly drawbitmapstring
+%{
+void drawBitmapString(std::string & textString,float x,float y) {
+	ofDrawBitmapString(textString,x,y,0.0f);
+}
+
+void drawBitmapStringPoint(std::string & textString,const ofPoint & p) {
+	ofDrawBitmapString(textString,p.x,p.y,p.z);
+}
+
+void drawBitmapString3D(std::string & textString,float x,float y,float z) {
+	ofDrawBitmapString(textString,x,y,z);
+}
+
+
+%}
+
+void drawBitmapString(std::string,float,float);
+void drawBitmapStringPoint(std::string,ofPoint);
+void drawBitmapString3D(std::string,float,float,float);
 
 // ----- of3dGraphics.h -----
 
@@ -783,6 +836,8 @@ public:
 // TODO: ofVec4f.h: ignoring ofVec4f::set(f), defined but not implemented in OF 0.8.4
 %ignore ofVec4f::set(float);
 
+%ignore ofVec2f::distanceSquared(const ofVec2f&) const;
+
 %include "math/ofVec2f.h"
 
 %extend ofVec2f {
@@ -793,6 +848,10 @@ public:
 	}
 };
 
+//deprecated
+%ignore ofVec3f::crossed(const ofVec3f&) const;
+%ignore ofVec3f::distanceSquared(const ofVec3f&) const;
+
 %include "math/ofVec3f.h"
 
 %extend ofVec3f {
@@ -802,6 +861,9 @@ public:
 		return str.str().c_str();
 	}
 };
+
+//deprecated
+%ignore ofVec4f::distanceSquared(const ofVec4f&) const;
 
 %include "math/ofVec4f.h"
 
