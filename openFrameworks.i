@@ -208,10 +208,44 @@ template<typename T> class ofBaseImage_ {};
 //deprecated
 %ignore ofImage_<unsigned char>::getTextureReference();
 %ignore ofImage_<unsigned char>::getTextureReference() const;
+%ignore ofImage_<unsigned char>::loadImage(string);
+%ignore ofImage_<unsigned char>::loadImage(const ofBuffer&);
+%ignore ofImage_<unsigned char>::loadImage(const ofFile&);
+%ignore ofImage_<unsigned char>::getPixelsRef();
+%ignore ofImage_<unsigned char>::getPixelsRef() const;
+%ignore ofImage_<unsigned char>::saveImage(string);
+%ignore ofImage_<unsigned char>::saveImage(string,ofImageQualityType);
+%ignore ofImage_<unsigned char>::saveImage(ofBuffer &,ofImageQualityType);
+%ignore ofImage_<unsigned char>::saveImage(ofBuffer &);
+%ignore ofImage_<unsigned char>::saveImage(const ofFile &,ofImageQualityType);
+%ignore ofImage_<unsigned char>::saveImage(const ofFile &);
 %ignore ofImage_<float>::getTextureReference();
-%ignore ofImage_<unsigned short>::getTextureReference();
 %ignore ofImage_<float>::getTextureReference() const;
+%ignore ofImage_<float>::loadImage(string);
+%ignore ofImage_<float>::loadImage(const ofBuffer&);
+%ignore ofImage_<float>::loadImage(const ofFile&);
+%ignore ofImage_<float>::getPixelsRef();
+%ignore ofImage_<float>::getPixelsRef() const;
+%ignore ofImage_<float>::saveImage(string,ofImageQualityType);
+%ignore ofImage_<float>::saveImage(string);
+%ignore ofImage_<float>::saveImage(ofBuffer &,ofImageQualityType);
+%ignore ofImage_<float>::saveImage(ofBuffer &);
+%ignore ofImage_<float>::saveImage(const ofFile &,ofImageQualityType);
+%ignore ofImage_<float>::saveImage(const ofFile &);
+%ignore ofImage_<unsigned short>::getTextureReference();
 %ignore ofImage_<unsigned short>::getTextureReference() const;
+%ignore ofImage_<unsigned short>::loadImage(string);
+%ignore ofImage_<unsigned short>::loadImage(const ofBuffer&);
+%ignore ofImage_<unsigned short>::loadImage(const ofFile&);
+%ignore ofImage_<unsigned short>::getPixelsRef();
+%ignore ofImage_<unsigned short>::getPixelsRef() const;
+%ignore ofImage_<unsigned short>::saveImage(string,ofImageQualityType);
+%ignore ofImage_<unsigned short>::saveImage(string);
+%ignore ofImage_<unsigned short>::saveImage(ofBuffer &,ofImageQualityType);
+%ignore ofImage_<unsigned short>::saveImage(ofBuffer &);
+%ignore ofImage_<unsigned short>::saveImage(const ofFile &,ofImageQualityType);
+%ignore ofImage_<unsigned short>::saveImage(const ofFile &);
+
 
 // TODO: ofImage.h: SWIG Warning 503: due to operator ofImage_::operator pixels
 %include "graphics/ofImage.h"
@@ -244,6 +278,9 @@ template<typename T> class ofBaseImage_ {};
 
 // ----- ofSoundStream.h -----
 
+//deprecated
+%ignore ofSoundStream::listDevices() const;
+
 %include "sound/ofSoundStream.h"
 
 // ----- ofSoundPlayer.h -----
@@ -260,6 +297,9 @@ class ofBaseSoundPlayer {};
 
 //deprecated
 %ignore ofSoundPlayer::getIsPlaying() const;
+%ignore ofSoundPlayer::loadSound(string,bool);
+%ignore ofSoundPlayer::loadSound(string);
+%ignore ofSoundPlayer::unloadSound();
 
 %include "sound/ofSoundPlayer.h"
 
@@ -399,6 +439,8 @@ class fstream {};
 %ignore ofBuffer::getBinaryBuffer() const;
 %ignore ofBuffer::getFirstLine();
 %ignore ofBuffer::getNextLine();
+%ignore ofBuffer::isLastLine();
+%ignore ofBuffer::resetLineReader();
 
 // TODO: SWIG Warning 503: due to operator ofBuffer::operator string
 %include "utils/ofFileUtils.h"
@@ -601,11 +643,15 @@ class fstream {};
 
 //deprecated
 %ignore ofPixels_<float>::getPixels();
-%ignore ofPixels_<unsigned char>::getPixels();
-%ignore ofPixels_<unsigned short>::getPixels();
-
+%ignore ofPixels_<float>::getPixels() const;
 %ignore ofPixels_<float>::getPixelsRef();
+
+%ignore ofPixels_<unsigned char>::getPixels();
+%ignore ofPixels_<unsigned char>::getPixels() const;
 %ignore ofPixels_<unsigned char>::getPixelsRef();
+
+%ignore ofPixels_<unsigned short>::getPixels();
+%ignore ofPixels_<unsigned short>::getPixels() const;
 %ignore ofPixels_<unsigned short>::getPixelsRef();
 
 
@@ -691,8 +737,36 @@ class fstream {};
 %ignore ofBgColorPtr;
 %ignore ofbClearBg;
 
-// TODO: ofGraphics.h: ignoring ofRectRounded(f,f,f,f,f,f), defined but not implemented in OF 0.8.4
+//deprecated
+%ignore ofBezier(float,float,float,float,float,float,float,float,float,float,float,float);
+%ignore ofBezier(float,float,float,float,float,float,float,float);
+%ignore ofCircle(float,float,float);
+%ignore ofCircle(float,float,float,float);
+%ignore ofCircle(const ofPoint &,float);
+%ignore ofCurve(float,float,float,float,float,float,float,float);
+%ignore ofCurve(float,float,float,float,float,float,float,float,float,float,float,float);
+%ignore ofEllipse(float,float,float,float);
+%ignore ofEllipse(float,float,float,float,float);
+%ignore ofEllipse(const ofPoint &,float,float);
+%ignore ofGetBackground();
+%ignore ofLine(float,float,float,float);
+%ignore ofLine(const ofPoint &,const ofPoint &);
+%ignore ofLine(float,float,float,float,float,float);
+%ignore ofRect(float,float,float,float);
+%ignore ofRect(float,float,float,float,float);
+%ignore ofRect(const ofPoint &,float,float);
+%ignore ofRect(const ofRectangle &);
 %ignore ofRectRounded(float, float, float, float, float, float);
+%ignore ofRectRounded(const ofRectangle &, float);
+%ignore ofRectRounded(const ofRectangle &, float,float,float,float);
+%ignore ofRectRounded(const ofPoint &, float, float, float);
+%ignore ofRectRounded(float, float, float, float, float);
+%ignore ofRectRounded(float, float, float, float, float,float,float,float,float);
+%ignore ofRectRounded(const ofPoint &, float, float, float,float,float,float);
+%ignore ofTriangle(float,float,float,float,float,float);
+%ignore ofTriangle(float,float,float,float,float,float,float,float,float);
+%ignore ofTriangle(const ofPoint &,const ofPoint &,const ofPoint &);
+
 
 %include "graphics/ofGraphics.h"
 
@@ -836,7 +910,18 @@ public:
 // TODO: ofVec4f.h: ignoring ofVec4f::set(f), defined but not implemented in OF 0.8.4
 %ignore ofVec4f::set(float);
 
+//deprecated
 %ignore ofVec2f::distanceSquared(const ofVec2f&) const;
+%ignore ofVec2f::interpolated(const ofVec2f&,float) const;
+%ignore ofVec2f::limited(float) const;
+%ignore ofVec2f::mapped(const ofVec2f&,const ofVec2f&,const ofVec2f&) const;
+%ignore ofVec2f::middled(const ofVec2f&) const;
+%ignore ofVec2f::normalized() const;
+%ignore ofVec2f::perpendiculared() const;
+%ignore ofVec2f::rescale(const float);
+%ignore ofVec2f::rescaled(const float) const;
+%ignore ofVec2f::rotated(float) const;
+%ignore ofVec2f::rotated(float,const ofVec2f &) const;
 
 %include "math/ofVec2f.h"
 
@@ -851,6 +936,18 @@ public:
 //deprecated
 %ignore ofVec3f::crossed(const ofVec3f&) const;
 %ignore ofVec3f::distanceSquared(const ofVec3f&) const;
+%ignore ofVec3f::interpolated(const ofVec3f&,float) const;
+%ignore ofVec3f::limited(float) const;
+%ignore ofVec3f::mapped(const ofVec3f&,const ofVec3f&,const ofVec3f&,const ofVec3f&) const;
+%ignore ofVec3f::middled(const ofVec3f&) const;
+%ignore ofVec3f::normalized() const;
+%ignore ofVec3f::perpendiculared() const;
+%ignore ofVec3f::perpendiculared(const ofVec3f&) const;
+%ignore ofVec3f::rescale(const float);
+%ignore ofVec3f::rescaled(const float) const;
+%ignore ofVec3f::rotated(float,const ofVec3f &) const;
+%ignore ofVec3f::rotated(float,const ofVec3f &,const ofVec3f &) const;
+%ignore ofVec3f::rotated(float,float,float);
 
 %include "math/ofVec3f.h"
 
@@ -864,6 +961,12 @@ public:
 
 //deprecated
 %ignore ofVec4f::distanceSquared(const ofVec4f&) const;
+%ignore ofVec4f::interpolated(const ofVec4f&,float) const;
+%ignore ofVec4f::limited(float) const;
+%ignore ofVec4f::middled(const ofVec4f&) const;
+%ignore ofVec4f::normalized() const;
+%ignore ofVec4f::rescale(const float);
+%ignore ofVec4f::rescaled(const float) const;
 
 %include "math/ofVec4f.h"
 
@@ -919,9 +1022,24 @@ ofInterpolateHermite(float y1, float y2, float pct);
 
 // ----- ofVideoGrabber.h -----
 
+//deprecated
+%ignore ofVideoGrabber::getPixelsRef();
+%ignore ofVideoGrabber::getPixelsRef() const;
+%ignore ofVideoGrabber::getTextureReference();
+%ignore ofVideoGrabber::getTextureReference() const;
+%ignore ofVideoGrabber::initGrabber(int,int,bool);
+
+
 %include "video/ofVideoGrabber.h"
 
 // ----- ofVideoPlayer.h -----
+
+//deprecated
+%ignore ofVideoPlayer::getPixelsRef();
+%ignore ofVideoPlayer::getPixelsRef() const;
+%ignore ofVideoPlayer::getTextureReference();
+%ignore ofVideoPlayer::getTextureReference() const;
+%ignore ofVideoPlayer::loadMovie(string);
 
 %include "video/ofVideoPlayer.h"
 
