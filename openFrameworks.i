@@ -255,11 +255,23 @@ template<typename T> class ofBaseImage_ {};
 	%template(Image) ofImage_<unsigned char>;
 	%template(FloatImage) ofImage_<float>;
 	%template(ShortImage) ofImage_<unsigned short>;
+	
+	
+	%attribute(ofImage_<unsigned char>, float, width, getWidth);
+	%attribute(ofImage_<unsigned char>, float, height, getHeight);
+	%attribute(ofImage_<float>, float, width, getWidth);
+	%attribute(ofImage_<float>, float, height, getHeight);
+	%attribute(ofImage_<unsigned short>, float, width, getWidth);
+	%attribute(ofImage_<unsigned short>, float, height, getHeight);
+	
 #else
 	%template(ofImage) ofImage_<unsigned char>;
 	%template(ofFloatImage) ofImage_<float>;
 	%template(ofShortImage) ofImage_<unsigned short>;
 #endif
+
+
+
 
 // DIFF: defined GLint texture types for convenience: OF_TEXTURE_LUMINENCE, etc
 #define OF_TEXTURE_LUMINENCE = GL_LUMINENCE
