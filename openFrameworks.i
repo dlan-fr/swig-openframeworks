@@ -566,8 +566,6 @@ class fstream {};
 
 // ----- of3dPrimitives.h -----
 
-// DIFF: of3dPrimitives.h: ignore of3DPrimitive base class
-%ignore of3dPrimitive;
 
 %include "3d/of3dPrimitives.h"
 
@@ -611,8 +609,8 @@ class fstream {};
 
 // DIFF: (Lua) ofMaterial.h: beginMaterial() & endMaterial() since "end" is a Lua keyword
 #ifdef SWIGLUA
-	%rename(beginMaterial) ofMaterial::begin;
-	%rename(endMaterial) ofMaterial::end;
+	%rename(beginMaterial) ofMaterial::begin() const;
+	%rename(endMaterial) ofMaterial::end() const;
 #endif
 
 %include "gl/ofMaterial.h"
