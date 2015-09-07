@@ -157,11 +157,12 @@ class ofBaseHasPixels {};
 %ignore ofFbo::getTextureReference(int);
 %ignore ofFbo::getTextureReference() const;
 %ignore ofFbo::getTextureReference(int) const;
+%ignore ofFbo::getFbo() const;
 
 // DIFF: (Lua) ofFbo.h: beginFbo() & endFbo() since "end" is a Lua keyword
 #ifdef SWIGLUA
-	%rename(beginFbo) ofFbo::begin;
-	%rename(endFbo) ofFbo::end;
+	%rename(beginFbo) ofFbo::begin() const;
+	%rename(endFbo) ofFbo::end() const;
 #endif
 
 %include "gl/ofFbo.h"
@@ -219,6 +220,7 @@ template<typename T> class ofBaseImage_ {};
 %ignore ofImage_<unsigned char>::saveImage(ofBuffer &);
 %ignore ofImage_<unsigned char>::saveImage(const ofFile &,ofImageQualityType);
 %ignore ofImage_<unsigned char>::saveImage(const ofFile &);
+%ignore ofImage_<unsigned char>::bAllocated();
 %ignore ofImage_<float>::getTextureReference();
 %ignore ofImage_<float>::getTextureReference() const;
 %ignore ofImage_<float>::loadImage(string);
@@ -232,6 +234,7 @@ template<typename T> class ofBaseImage_ {};
 %ignore ofImage_<float>::saveImage(ofBuffer &);
 %ignore ofImage_<float>::saveImage(const ofFile &,ofImageQualityType);
 %ignore ofImage_<float>::saveImage(const ofFile &);
+%ignore ofImage_<float>::bAllocated();
 %ignore ofImage_<unsigned short>::getTextureReference();
 %ignore ofImage_<unsigned short>::getTextureReference() const;
 %ignore ofImage_<unsigned short>::loadImage(string);
@@ -245,6 +248,7 @@ template<typename T> class ofBaseImage_ {};
 %ignore ofImage_<unsigned short>::saveImage(ofBuffer &);
 %ignore ofImage_<unsigned short>::saveImage(const ofFile &,ofImageQualityType);
 %ignore ofImage_<unsigned short>::saveImage(const ofFile &);
+%ignore ofImage_<unsigned short>::bAllocated();
 
 
 // TODO: ofImage.h: SWIG Warning 503: due to operator ofImage_::operator pixels
@@ -445,6 +449,7 @@ class fstream {};
 %ignore ofDirectory::canWrite() const;
 %ignore ofDirectory::canExecute() const;
 %ignore ofBuffer::getLines();
+%ignore ofDirectory::numFiles();
 
 //deprecated
 %ignore ofBuffer::getBinaryBuffer();
@@ -493,6 +498,8 @@ class fstream {};
 %include "utils/ofThread.h"
 
 // ----- ofURLFileLoader.h -----
+
+%ignore ofHttpRequest::getID();
 
 // TODO: ofURLFileLoader.h: SWIG Warning 503: due to operator ofURLFileLoader::buffer&
 %include "utils/ofURLFileLoader.h"
@@ -554,6 +561,10 @@ class fstream {};
 %include "3d/ofCamera.h"
 
 // ----- ofEasyCam.h -----
+#ifdef SWIGLUA
+	%rename(beginCamera) ofEasyCam::begin;
+	%rename(endCamera) ofEasyCam::end;
+#endif
 
 %include "3d/ofEasyCam.h"
 
@@ -566,6 +577,7 @@ class fstream {};
 
 // ----- of3dPrimitives.h -----
 
+%ignore of3dPrimitive::draw(ofPolyRenderMode renderType) const;
 
 %include "3d/of3dPrimitives.h"
 
@@ -619,8 +631,8 @@ class fstream {};
 
 // DIFF: (Lua) ofShader.h: beginShader() & endShader() since "end" is a Lua keyword
 #ifdef SWIGLUA
-	%rename(beginShader) ofShader::begin;
-	%rename(endShader) ofShader::end;
+	%rename(beginShader) ofShader::begin() const;
+	%rename(endShader) ofShader::end() const;
 #endif
 
 %include "gl/ofShader.h"
@@ -670,23 +682,29 @@ class fstream {};
 //ignore these functions for now since swig doesn't wrap them correctly
 %ignore ofPixels_<float>::getLine(int);
 %ignore ofPixels_<float>::getLines();
+%ignore ofPixels_<float>::getLines(int,int);
 %ignore ofPixels_<float>::getPixelsIter();
 %ignore ofPixels_<float>::getConstLine(int) const;
 %ignore ofPixels_<float>::getConstLines() const;
+%ignore ofPixels_<float>::getConstLines(int,int) const;
 %ignore ofPixels_<float>::getConstPixelsIter() const;
 
 %ignore ofPixels_<unsigned char>::getLine(int);
 %ignore ofPixels_<unsigned char>::getLines();
+%ignore ofPixels_<unsigned char>::getLines(int,int);
 %ignore ofPixels_<unsigned char>::getPixelsIter();
 %ignore ofPixels_<unsigned char>::getConstLine(int) const;
+%ignore ofPixels_<unsigned char>::getConstLines(int,int) const;
 %ignore ofPixels_<unsigned char>::getConstLines() const;
 %ignore ofPixels_<unsigned char>::getConstPixelsIter() const;
 
 %ignore ofPixels_<unsigned short>::getLine(int);
 %ignore ofPixels_<unsigned short>::getLines();
+%ignore ofPixels_<unsigned short>::getLines(int,int);
 %ignore ofPixels_<unsigned short>::getPixelsIter();
 %ignore ofPixels_<unsigned short>::getConstLine(int) const;
 %ignore ofPixels_<unsigned short>::getConstLines() const;
+%ignore ofPixels_<unsigned short>::getConstLines(int,int) const;
 %ignore ofPixels_<unsigned short>::getConstPixelsIter() const;
 
 // tell SWIG about template classes
@@ -706,9 +724,6 @@ class fstream {};
 %ignore ofPath::getArcResolution;
 %ignore ofPath::setArcResolution;
 
-// TODO: ofPath.h: ignoring getCurveResolution(), defined but not implemented in OF 0.8.4
-%ignore ofPath::getCurveResolution() const;
-
 // TODO: ofPath.h: SWIG Warning 325 due to ofPath::Command nested struct
 %include "graphics/ofPath.h"
 
@@ -718,12 +733,23 @@ class fstream {};
 %ignore ofPolyline::arc(float,float,float,float,float,float,float);
 %ignore ofPolyline::arcNegative(float,float,float,float,float,float,float);
 
+#ifdef SWIGLUA
+	%rename(beginIter) ofPolyline::begin();
+	%rename(endIter) ofPolyline::end();
+	%rename(beginIterConst) ofPolyline::begin() const;
+	%rename(endIterConst) ofPolyline::end() const;
+	%rename(beginrIter) ofPolyline::rbegin();
+	%rename(endrIter) ofPolyline::rend();
+	%rename(beginrIterConst) ofPolyline::rbegin() const;
+	%rename(endrIterConst) ofPolyline::rend() const;
+#endif
+
 %include "graphics/ofPolyline.h"
 
 // ----- ofGraphics.h -----
 
 // no PDF export support on mobile
-#if defined(TARGET_IOS) || defined(TARGET_ANDROID)
+#if defined(TARGET_IOS) || defined(TARGET_ANDROID) || defined(TARGET_EMSCRIPTEN)
 	%ignore ofBeginSaveScreenAsPDF;
 	%ignore ofEndSaveScreenAsPDF();
 #endif
